@@ -1,0 +1,2 @@
+# ArcartX-TabLite
+本插件为ArcartXSuite的Tab模块阉割版本独立插件，用于解决产品售卖的历史遗留问题
