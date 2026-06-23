@@ -1,6 +1,6 @@
 # ArcartX-TabLite
 
-轻量级独立 ArcartX TAB 插件，仅保留基础玩家列表与 PAPI 解析功能。
+轻量级独立 ArcartX TAB 插件，仅保留基础玩家列表与内置占位符解析功能。
 
 > 本插件为 ArcartXSuite 的 Tab 模块阉割版本独立插件，用于解决产品售卖的历史遗留问题。移除了跨服联动及一切扩展功能，只保留最核心的在线玩家列表展示与占位符解析。
 
@@ -9,11 +9,10 @@
 ## 功能特性
 
 - **轻量独立**：不依赖 ArcartXSuite 宿主，仅需 ArcartX 客户端前置
-- **在线玩家列表**：实时展示服务器在线玩家，支持自定义排序与显示上限
+- **在线玩家列表**：实时展示服务器在线玩家，按玩家名排序并支持显示上限
 - **占位符解析**：
   - 内置 `%player_xxx%` 占位符（名称、血量、坐标、世界、延迟等）
   - 内置 `%server_xxx%` 占位符（在线人数、TPS、MOTD 等）
-  - 兼容 **PlaceholderAPI** 外部占位符
 - **智能刷新**：
   - 定时自动刷新（默认 1 秒）
   - 数据变化 diff 检测，避免重复发包
@@ -28,7 +27,6 @@
 | 插件 | 必需 | 说明 |
 |------|------|------|
 | **ArcartX** | ✅ 必须 | 客户端 UI 框架前置 |
-| **PlaceholderAPI** | ❌ 可选 | 扩展占位符支持 |
 
 ---
 
@@ -77,7 +75,7 @@ sort-descending: false
 omit-blank-values: false
 
 # 每行显示模板，会对每个在线玩家渲染一次
-# 支持 %player_xxx% / %server_xxx% 以及 PAPI 占位符
+# 支持 %player_xxx% / %server_xxx% 内置占位符
 pack: "%player_name% %player_health%/%player_max_health%"
 ```
 
