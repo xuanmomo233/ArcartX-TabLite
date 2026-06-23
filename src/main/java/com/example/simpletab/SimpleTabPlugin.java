@@ -41,6 +41,9 @@ public final class SimpleTabPlugin extends JavaPlugin {
 
         loadConfigAndStartService();
 
+        // 检测并注册 fallback PAPI 扩展（若原生 player/server 扩展缺失）
+        registerFallbackPapiExpansionsIfNeeded();
+
         // 监听客户端刷新包
         arcartXBridge.listenClientPackets((player, packet) -> {
             if (tabService != null) {
@@ -98,5 +101,30 @@ public final class SimpleTabPlugin extends JavaPlugin {
         }
         tabService = new TabService(this, tabConfig, arcartXBridge);
         tabService.start();
+    }
+
+    private void registerFallbackPapiExpansionsIfNeeded() {
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            return;
+        }
+        if (!isPapiExpansionRegistered("player")) {
+            getLogger().info("PlaceholderAPI 未检测到 player 扩展，已注入内置 player 占位符。");
+            new SimplePlayerExpansion(this).register();
+        }
+        if (!isPapiExpansionRegistered("server")) {
+            getLogger().info("PlaceholderAPI 未检测到 server 扩展，已注入内置 server 占位符。");
+            new SimpleServerExpansion(this).register();
+        }
+    }
+
+    private boolean isPapiExpansionRegistered(String identifier) {
+        try {
+            Class<?> papiClass = Class.forName("me.clip.placeholderapi.PlaceholderAPI");
+            java.lang.reflect.Method method = papiClass.getMethod("getRegisteredPlaceholderExpansion", String.class);
+            Object result = method.invoke(null, identifier);
+            return result != null;
+        } catch (ReflectiveOperationException | LinkageError e) {
+            return false;
+        }
     }
 }

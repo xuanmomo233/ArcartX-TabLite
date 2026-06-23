@@ -11,9 +11,8 @@
 - **轻量独立**：不依赖 ArcartXSuite 宿主，仅需 ArcartX 客户端前置
 - **在线玩家列表**：实时展示服务器在线玩家，仅支持按玩家名排序与显示上限
 - **占位符解析**：
-  - 内置 `%player_xxx%` 占位符（名称、血量、坐标、世界、延迟等）
-  - 内置 `%server_xxx%` 占位符（在线人数、TPS、MOTD 等）
-  - 软依赖兼容 **PlaceholderAPI** 外部占位符（服务端安装后自动生效，未安装不影响）
+  - 兼容 **PlaceholderAPI** 全部占位符（必须安装）
+  - 若未安装 PAPI 的 `Expansion-player.jar` / `Expansion-server.jar` 扩展，插件会自动注入对应的内置回退占位符，保证 `%player_xxx%` 与 `%server_xxx%` 可用
 - **智能刷新**：
   - 定时自动刷新（默认 1 秒）
   - 数据变化 diff 检测，避免重复发包
@@ -28,7 +27,7 @@
 | 插件 | 必需 | 说明 |
 |------|------|------|
 | **ArcartX** | ✅ 必须 | 客户端 UI 框架前置 |
-| **PlaceholderAPI** | ❌ 可选 | 扩展占位符支持（软依赖） |
+| **PlaceholderAPI** | ✅ 必须 | 占位符解析前置；若缺少 player/server 扩展，插件会自动注入回退占位符 |
 
 ---
 
@@ -77,25 +76,27 @@ sort-descending: false
 omit-blank-values: false
 
 # 每行显示模板，会对每个在线玩家渲染一次
-# 支持 %player_xxx% / %server_xxx% 内置占位符，以及 PAPI 扩展占位符
+# 支持 PAPI 全部占位符；若未安装 Expansion-player / Expansion-server，插件会自动注入回退占位符
 pack: "%player_name% %player_health%/%player_max_health%"
 ```
 
-### 常用内置占位符
+### 自动回退占位符
+
+当 PlaceholderAPI 缺少 `Expansion-player.jar` 或 `Expansion-server.jar` 时，插件会自动注入以下等效占位符，保证 Tab 基础功能可用：
 
 **玩家相关（`%player_xxx%`）**
 
 | 占位符 | 说明 |
 |--------|------|
 | `%player_name%` | 玩家名 |
-| `%player_displayname%` | 显示名 |
+| `%player_displayname%` / `%player_display_name%` | 显示名 |
 | `%player_uuid%` | UUID |
 | `%player_world%` | 所在世界 |
 | `%player_x%` / `%player_y%` / `%player_z%` | 坐标 |
 | `%player_health%` / `%player_max_health%` | 当前 / 最大生命值 |
 | `%player_ping%` | 网络延迟 |
 | `%player_gamemode%` | 游戏模式 |
-| `%player_scoreboard_team%` | 计分板队伍 |
+| `%player_scoreboardteam%` / `%player_scoreboard_team%` | 计分板队伍 |
 
 **服务器相关（`%server_xxx%`）**
 
@@ -106,7 +107,7 @@ pack: "%player_name% %player_health%/%player_max_health%"
 | `%server_name%` | 服务器名称 |
 | `%server_version%` | 服务器版本 |
 | `%server_motd%` | MOTD |
-| `%server_tps%` / `%server_tps_5%` / `%server_tps_15%` | TPS（1/5/15分钟） |
+| `%server_tps%` / `%server_tps_1%` / `%server_tps_5%` / `%server_tps_15%` | TPS |
 
 ---
 
