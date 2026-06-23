@@ -1,0 +1,26 @@
+# SimpleArcartXTab 定义
+# 仅保留基础玩家列表与 PAPI 解析，不支持跨服 / 分页 / 分组 / 视图 / 置顶置底
+
+enabled: true
+ui-id: "tab"
+packet-handler: "tab"
+
+# 客户端 Packet.send("TAB", "update") 触发刷新
+client-refresh-packet-id: "TAB"
+client-refresh-action: "update"
+client-refresh-guard:
+  enabled: true
+  window-ms: 1500
+  max-hits: 1
+  mode: "silent"
+  notify-message: "&cTAB 刷新过快，请稍后再试。"
+  notify-cooldown-ms: 3000
+
+max-entries: -1
+sort-mode: "name"
+sort-descending: false
+omit-blank-values: false
+
+# pack 为字符串时，按每个在线玩家渲染一次，组成 List<String> 发给 UI
+# 支持 %player_xxx% / %server_xxx% 内置占位符，以及 PlaceholderAPI 外部占位符
+pack: "%player_name% %player_health%/%player_max_health%"

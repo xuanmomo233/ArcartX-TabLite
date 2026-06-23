@@ -1,0 +1,159 @@
+ui:
+  isHud: true
+  hide:
+  - player_list
+  escClose: false
+  defaultOpen: true
+  action:
+    load: |-
+      var.TAB刷新轮次 = 0
+      var.TAB显示 = false
+    keyPress: |-
+      if(self.currentKeyPress() == "TAB"){
+        Packet.send("TAB","update")
+        var.单列数量 = Math.ceil(server.server_online / val.TAB遍历.row)
+        var.第一列人数 = Math.min(server.server_online, 15)
+        var.TAB显示 = true
+      }
+    keyRelease: |-
+      if(self.currentKeyReleased() == "TAB"){
+        var.TAB显示 = false
+      }
+  packetHandler:
+    tab: |-
+      i = 0
+      var.TAB刷新轮次 = var.TAB刷新轮次 + 1
+      while(val.TAB遍历2.childrenCount() > 1){
+        val.TAB遍历2.get(1).remove()
+      }
+      //此处的写法有点赘余，但这是为了防止报错写的伪判断,以及绕过ax的控件的复制删除BUG
+      while(i <= packet.size()){
+        if(val.player.width == 250){
+          TAB = val.player.copy('player_' + var.TAB刷新轮次 + '_' + i)
+          TAB['player_text'].texts = packet.get(i)
+          TAB.visible = true
+          i++
+        }
+      }
+      var.单列数量 = Math.ceil(server.server_online / val.TAB遍历.row)
+      var.第一列人数 = Math.min(server.server_online, 15)
+controls:
+  自适应全局布局:
+    type: adaptive
+    attribute:
+      point: ~top_center
+      width: 1920
+      height: 1080
+    children:
+      TAB背景:
+        type: texture
+        attribute:
+          point: ~top_center
+          width: 50 + 252 * var.单列数量
+          height: 70 + 27 * var.第一列人数 + self['信息排列布局'].childrenCount() * 27 / self.about_y
+          y: 40
+          normal: ~Frosted:30;0,0,0,255
+          visible: var.TAB显示
+          shape: ~round_rect
+          radius: 20
+          about_y: "var.单列数量 < 4 || var.单列数量 > 5 ? var.单列数量 : 3"
+        effect:
+          stroke:
+            width: 3
+            color: ~0,0,0,255
+        children:
+          在线玩家:
+            type: text
+            attribute:
+              y: 23
+              x: 26
+              fontSize: 33
+              texts: "'&a&l在线玩家：'"
+              lineSpace: 8
+          信息排列布局:
+            type: HGrid
+            attribute:
+              y: 70 + 27 * var.第一列人数 - 10
+              x: 26
+              spaceBetweenY: 2
+              spaceBetweenX: 2
+              column: var.单列数量
+            children:
+              PING:
+                type: Canvas
+                attribute:
+                  width: 200
+                  height: 25
+                children:
+                  文本:
+                    type: text
+                    attribute:
+                      fontSize: 33
+                      texts: "~&f&l玩家延迟：{server.player_ping}"
+                      lineSpace: 8
+              TPS:
+                type: Canvas
+                attribute:
+                  width: 200
+                  height: 25
+                children:
+                  文本:
+                    type: text
+                    attribute:
+                      fontSize: 33
+                      texts: "~&f&l服务器TPS：{server.server_tps_1}"
+                      lineSpace: 8
+          TAB遍历:
+            type: VGrid
+            val: TAB遍历
+            attribute:
+              spaceBetweenY: 2
+              spaceBetweenX: 2
+              row: 15
+              y: 44
+              x: 26
+            action:
+              create: |-
+                for(i in range(1, 119)){
+                  TAB = self['TAB'].copy('TAB' + i)
+                  TAB.ID = i
+                }
+            children:
+              TAB:
+                type: texture
+                val: TAB
+                attribute:
+                  point: ~top_center
+                  #在这里调整width适应文本长度###################################
+                  width: 250
+                  height: 25
+                  shape: ~round_rect
+                  radius: 10
+                  ID: 0
+                  normal: ~95,95,95,255
+                  visible: var.TAB显示 && self.ID < server.server_online
+          TAB遍历2:
+            type: VGrid
+            val: TAB遍历2
+            attribute:
+              spaceBetweenY: 2
+              spaceBetweenX: 2
+              row: 15
+              y: 44
+              x: 26
+            children:
+              player:
+                type: Canvas
+                val: player
+                attribute:
+                  width: 250
+                  height: 25
+                  x: 4
+                  y: 4
+                  visible: false
+                children:
+                  player_text:
+                    type: text
+                    attribute:
+                      fontSize: 33
+                      texts: "~null"

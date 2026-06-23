@@ -1,0 +1,19 @@
+name: ArcartX-Tab阉割版
+version: ${project.version}
+main: com.example.simpletab.SimpleTabPlugin
+description: 轻量级独立 ArcartX TAB 插件，仅保留基础玩家列表与 PAPI 解析 | 作者：墨墨墨 QQ1451759359
+author: 墨墨墨
+api-version: '1.20'
+depend:
+  - ArcartX
+softdepend:
+  - PlaceholderAPI
+commands:
+  simpletab:
+    description: ArcartX-Tab阉割版 管理命令
+    usage: /simpletab reload
+    permission: simpletab.admin
+permissions:
+  simpletab.admin:
+    description: 管理 ArcartX-Tab阉割版
+    default: op
