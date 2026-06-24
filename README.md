@@ -12,7 +12,7 @@
 - **在线玩家列表**：实时展示服务器在线玩家，仅支持按玩家名排序与显示上限
 - **占位符解析**：
   - 兼容 **PlaceholderAPI** 全部占位符（必须安装）
-  - 若未安装 PAPI 的 `Expansion-player.jar` / `Expansion-server.jar` 扩展，插件会自动注入对应的内置回退占位符，保证 `%player_xxx%` 与 `%server_xxx%` 可用
+  - 若未安装 PAPI 的 `Expansion-player.jar` / `Expansion-server.jar` 扩展则无法使用
 - **智能刷新**：
   - 定时自动刷新（默认 1 秒）
   - 数据变化 diff 检测，避免重复发包
@@ -80,34 +80,6 @@ omit-blank-values: false
 pack: "%player_name% %player_health%/%player_max_health%"
 ```
 
-### 自动回退占位符
-
-当 PlaceholderAPI 缺少 `Expansion-player.jar` 或 `Expansion-server.jar` 时，插件会自动注入以下等效占位符，保证 Tab 基础功能可用：
-
-**玩家相关（`%player_xxx%`）**
-
-| 占位符 | 说明 |
-|--------|------|
-| `%player_name%` | 玩家名 |
-| `%player_displayname%` / `%player_display_name%` | 显示名 |
-| `%player_uuid%` | UUID |
-| `%player_world%` | 所在世界 |
-| `%player_x%` / `%player_y%` / `%player_z%` | 坐标 |
-| `%player_health%` / `%player_max_health%` | 当前 / 最大生命值 |
-| `%player_ping%` | 网络延迟 |
-| `%player_gamemode%` | 游戏模式 |
-| `%player_scoreboardteam%` / `%player_scoreboard_team%` | 计分板队伍 |
-
-**服务器相关（`%server_xxx%`）**
-
-| 占位符 | 说明 |
-|--------|------|
-| `%server_online%` | 在线人数 |
-| `%server_max_players%` | 最大玩家数 |
-| `%server_name%` | 服务器名称 |
-| `%server_version%` | 服务器版本 |
-| `%server_motd%` | MOTD |
-| `%server_tps%` / `%server_tps_1%` / `%server_tps_5%` / `%server_tps_15%` | TPS |
 
 ---
 
