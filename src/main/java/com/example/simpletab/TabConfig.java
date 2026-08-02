@@ -18,7 +18,6 @@ public final class TabConfig {
     public String clientRefreshAction = "update";
     public RefreshGuard.GuardConfig guardConfig = RefreshGuard.GuardConfig.disabled();
     public int maxEntries = -1;
-    public String sortMode = "name";
     public boolean sortDescending = false;
     public boolean omitBlankValues = false;
     public String pack = "%player_name%";
@@ -39,13 +38,14 @@ public final class TabConfig {
         cfg.clientRefreshAction = nullToEmpty(yaml.getString("client-refresh-action", "update"));
         cfg.guardConfig = loadGuard(yaml.getConfigurationSection("client-refresh-guard"));
         cfg.maxEntries = yaml.getInt("max-entries", -1);
-        cfg.sortMode = nullToEmpty(yaml.getString("sort-mode", "name"));
         cfg.sortDescending = yaml.getBoolean("sort-descending", false);
         cfg.omitBlankValues = yaml.getBoolean("omit-blank-values", false);
         cfg.pack = yaml.getString("pack", "%player_name%");
         if (cfg.pack == null || cfg.pack.isBlank()) {
             cfg.pack = "%player_name%";
         }
+        cfg.refreshIntervalTicks = Math.max(1, yaml.getInt("refresh-interval-ticks", 20));
+        cfg.debug = yaml.getBoolean("debug", false);
         return cfg;
     }
 

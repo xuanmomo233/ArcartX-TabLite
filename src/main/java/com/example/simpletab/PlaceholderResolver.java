@@ -1,43 +1,30 @@
 package com.example.simpletab;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Method;
-
 /**
- * 占位符解析器：完全委托给 PlaceholderAPI。
+ * 占位符解析器：直接调用 PlaceholderAPI.setPlaceholders。
  * <p>
- * 插件启动时会检测 player/server 扩展是否存在；若缺失则主动注入回退扩展。
+ * PlaceholderAPI 已声明为 compileOnly 依赖，无需反射。
  */
 public final class PlaceholderResolver {
 
     private final boolean papiAvailable;
-    private Method setPlaceholdersMethod;
 
     public PlaceholderResolver() {
-        boolean available = false;
-        Method method = null;
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            try {
-                Class<?> clipsClass = Class.forName("me.clip.placeholderapi.PlaceholderAPI");
-                method = clipsClass.getMethod("setPlaceholders", Player.class, String.class);
-                available = true;
-            } catch (ReflectiveOperationException ignored) {
-            }
-        }
-        this.papiAvailable = available;
-        this.setPlaceholdersMethod = method;
+        this.papiAvailable = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
     }
 
     public String resolve(String input, Player player) {
         if (input == null || input.isEmpty() || !input.contains("%")) {
             return input == null ? "" : input;
         }
-        if (papiAvailable && player != null && setPlaceholdersMethod != null) {
+        if (papiAvailable && player != null) {
             try {
-                return (String) setPlaceholdersMethod.invoke(null, player, input);
-            } catch (ReflectiveOperationException ignored) {
+                return PlaceholderAPI.setPlaceholders(player, input);
+            } catch (Throwable ignored) {
             }
         }
         return input;

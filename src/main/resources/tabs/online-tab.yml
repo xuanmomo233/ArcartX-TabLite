@@ -17,9 +17,14 @@ client-refresh-guard:
   notify-cooldown-ms: 3000
 
 max-entries: -1
-sort-mode: "name"
 sort-descending: false
 omit-blank-values: false
+
+# 刷新间隔（ticks），默认 20（1 秒）
+refresh-interval-ticks: 20
+
+# 调试日志
+debug: false
 
 # pack 为字符串时，按每个在线玩家渲染一次，组成 List<String> 发给 UI
 # 支持 %player_xxx% / %server_xxx% 内置占位符，以及 PlaceholderAPI 外部占位符

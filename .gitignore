@@ -17,3 +17,7 @@ Thumbs.db
 
 # Runtime
 *.log
+
+# 编译期依赖（ArcartX jar，compileOnly，运行时由服务端提供）
+# 需手动将 ArcartX jar 放入 libs/ 目录才能编译
+libs/

@@ -79,6 +79,15 @@ public final class SimpleTabPlugin extends JavaPlugin {
         }
         if ("reload".equalsIgnoreCase(args[0])) {
             reloadConfig();
+            // 重新注册 tab.yml UI（支持 UI 定义热更新）
+            if (arcartXBridge != null && arcartXBridge.isAvailable()) {
+                File uiFile = new File(getDataFolder(), "tab.yml");
+                if (arcartXBridge.registerOrReloadUi("tab", uiFile)) {
+                    sender.sendMessage("§aUI 'tab' 已重注册。");
+                } else {
+                    sender.sendMessage("§cUI 'tab' 重注册失败，查看后台日志。");
+                }
+            }
             if (tabService != null) {
                 tabService.stop();
             }

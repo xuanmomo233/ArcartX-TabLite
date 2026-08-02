@@ -142,12 +142,7 @@ public final class TabService implements Listener {
 
     private List<Player> sort(List<Player> players) {
         List<Player> copy = new ArrayList<>(players);
-        Comparator<Player> comparator;
-        switch (config.sortMode.toLowerCase()) {
-            default:
-                comparator = Comparator.comparing(Player::getName, String.CASE_INSENSITIVE_ORDER);
-                break;
-        }
+        Comparator<Player> comparator = Comparator.comparing(Player::getName, String.CASE_INSENSITIVE_ORDER);
         if (config.sortDescending) {
             comparator = comparator.reversed();
         }
